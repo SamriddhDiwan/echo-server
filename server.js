@@ -19,17 +19,26 @@ let connectedClients = [];
 
 wsServer.on("connection", (ws, req) => {
   console.log("Connected");
-  // Add new connected client
   connectedClients.push(ws);
-  // Listen for messages from the streamer
+
   ws.on("message", (data) => {
+    console.log("Received data:", data); // Log received data
     connectedClients.forEach((ws, i) => {
       if (ws.readyState === ws.OPEN) {
-        ws.send(data); // Send data to all connected clients
+        ws.send(data); // Echo the data back
       } else {
         connectedClients.splice(i, 1); // Remove disconnected clients
       }
     });
+  });
+
+  ws.on("close", () => {
+    console.log("Client disconnected");
+    connectedClients = connectedClients.filter(client => client !== ws);
+  });
+
+  ws.on("error", (err) => {
+    console.error("WebSocket error:", err); // Log WebSocket errors
   });
 });
 
