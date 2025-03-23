@@ -3,14 +3,16 @@ const express = require("express");
 const WebSocket = require("ws");
 const app = express();
 
-// Use Render's environment variables for ports
-const WS_PORT = process.env.WS_PORT || 8080; // WebSocket port
-const HTTP_PORT = process.env.PORT || 8000; // HTTP port (Render uses PORT)
+// Use Render's environment variable for the port
+const PORT = process.env.PORT || 10000; // Use Render's PORT or fallback to 10000
 
-// WebSocket server
-const wsServer = new WebSocket.Server({ port: WS_PORT }, () =>
-  console.log(`WS server is listening at ws://localhost:${WS_PORT}`)
+// Create an HTTP server
+const server = app.listen(PORT, () =>
+  console.log(`HTTP server listening at http://localhost:${PORT}`)
 );
+
+// Create a WebSocket server by passing the HTTP server
+const wsServer = new WebSocket.Server({ server });
 
 // Array of connected WebSocket clients
 let connectedClients = [];
@@ -31,13 +33,9 @@ wsServer.on("connection", (ws, req) => {
   });
 });
 
-// HTTP server
+// HTTP server routes
 app.use("/image", express.static("image")); // Serve static images
 app.use("/js", express.static("js")); // Serve static JavaScript files
 app.get("/audio", (req, res) =>
   res.sendFile(path.resolve(__dirname, "./audio_client.html")) // Serve HTML file
-);
-
-app.listen(HTTP_PORT, () =>
-  console.log(`HTTP server listening at http://localhost:${HTTP_PORT}`)
 );
