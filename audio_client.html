@@ -104,7 +104,6 @@
             ws.addEventListener('message', function (event) {
                 if (continueBtn.disabled) {
                     player.feed(event.data)
-                    worker.postMessage(event.data) // Remove if it makes the web browser slow.
                 }
             });
         }

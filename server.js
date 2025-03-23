@@ -22,7 +22,6 @@ wsServer.on("connection", (ws, req) => {
   connectedClients.push(ws);
 
   ws.on("message", (data) => {
-    console.log("Received data:", data); // Log received data
     connectedClients.forEach((ws, i) => {
       if (ws.readyState === ws.OPEN) {
         ws.send(data); // Echo the data back
