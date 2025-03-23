@@ -12,6 +12,9 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
+    "express": "^4.21.2",
+    "path": "^0.12.7",
+    "pth": "^1.0.0",
     "ws": "^8.18.1"
   }
 }
