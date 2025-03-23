@@ -4,8 +4,8 @@ const WebSocket = require("ws");
 const app = express();
 
 // Use Render's environment variables for ports
-const WS_PORT = process.env.PORT || 8080; // WebSocket port
-const HTTP_PORT = process.env.PORT || 8000; // HTTP port
+const WS_PORT = process.env.WS_PORT || 8080; // WebSocket port
+const HTTP_PORT = process.env.PORT || 8000; // HTTP port (Render uses PORT)
 
 // WebSocket server
 const wsServer = new WebSocket.Server({ port: WS_PORT }, () =>
